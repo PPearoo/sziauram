@@ -12,18 +12,7 @@ import textwrap
 import traceback
 from contextlib import redirect_stdout
 import io
-import math
-import cpuinfo # pip3 install py-cpuinfo
 # ! Importok, ne nagyon érjetek hozzá
-
-def convert_size(size_bytes):
-   if size_bytes == 0:
-       return "0B"
-   size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
-   i = int(math.floor(math.log(size_bytes, 1024)))
-   p = math.pow(1024, i)
-   s = round(size_bytes / p, 2)
-   return "%s %s" % (s, size_name[i])
 
 # * A bot létrehozása, a prefix a bot megemlítése vagy "szia!!"
 client = commands.Bot(command_prefix=commands.when_mentioned_or('szia!!'), intents=nextcord.Intents.all())
@@ -192,7 +181,7 @@ async def config_visszakoszonesek(ctx, addremove, *, szoveg):
 async def info(ctx):
     embed = nextcord.Embed(title="Bot Információk", timestamp=datetime.datetime.utcnow(), color=nextcord.Color.red())
     embed.add_field(name="A bot készítője", value="`Pearoo#4179`", inline=False)
-    embed.add_field(name="Segítők", value="Fejlesztés: `FightMan01#1680`, `Dempy#0053`, cablesalty\nVPS: `✠ϟ Elydra ϟ✠#0001`\nÖtlet: `Tsukuyomi (月読命)#1377`\nNem segített semmit, csak benne akart lenni a listában: `ShadowCracker#0097`", inline=False)
+    embed.add_field(name="Segítők", value="Fejlesztés: `FightMan01#1680`, `Dempy#0053`\nVPS: `✠ϟ Elydra ϟ✠#0001`\nÖtlet: `Tsukuyomi (月読命)#1377`\nNem segített semmit, csak benne akart lenni a listában: `ShadowCracker#0097`", inline=False)
     embed.add_field(name="Parancsok száma", value=len(client.commands))
     embed.add_field(name="Szerverek száma", value=len(client.guilds))
     embed.add_field(name="Csatornák száma", value=len(set(client.get_all_channels())))
@@ -200,13 +189,10 @@ async def info(ctx):
     embed.add_field(name="Python verzió", value=platform.python_version())
     embed.add_field(name="nextcord verzió", value=nextcord.__version__)
     embed.add_field(name="Programozási könyvtárak", value="`nextcord`, `json`, `random`, `datetime`, `platform`, `psutil`, `contextlib`, `traceback`, `inspect`, `textwrap`, `io`")
-    if platform.system() == "Darwin": # Ha a rendszer macOS, nem kell a platform.version()
-        embed.add_field(name="Operációs rendszer", value=f"{platform.system()} {platform.release()}")
-    else:
-        embed.add_field(name="Operációs rendszer", value=f"{platform.system()} {platform.release()} {platform.version()}")
-    embed.add_field(name="CPU (processzor)", value=f"{cpuinfo.get_cpu_info()['brand_raw']} ({cpuinfo.get_cpu.info()['count']} mag)")
+    embed.add_field(name="Operációs rendszer", value=f"Linux Ubuntu 20.04")
+    embed.add_field(name="CPU (processzor)", value="Nem tudtam lekérni")
     embed.add_field(name="CPU kihasználtság", value=f"{psutil.cpu_percent()}%")
-    embed.add_field(name="Memória mérete", value=f"{convert_size(psutil.virtual_memory().total)} ({psutil.virtual_memory().used} felhasználva)")
+    embed.add_field(name="Memória mérete", value=f"32 GB (29.4 használható)")
     embed.add_field(name="Memória kihasználtság", value=f"{psutil.virtual_memory().percent}%")
     await ctx.reply(embed=embed, mention_author=False)
 
